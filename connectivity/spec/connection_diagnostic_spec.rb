@@ -26,7 +26,7 @@ describe ConnectionDiagnostic do
   end
 
     
-    it "Is able to see if the Client is connected" do
+  it "Is able to see if the Client is connected" do
     client = double('client')
     allow(client).to receive(:online_status).and_return(true)
 
@@ -35,5 +35,46 @@ describe ConnectionDiagnostic do
     expect(connection_diagnostic.check_status).to eq("AT#UD")
   end  
 
+  it "Tells the client to disconnect" do
+
+    client = double('client')
+    expect(client).to receive(:disconnect)
+
+    connection_diagnostic = ConnectionDiagnostic.new(client)
+    connection_diagnostic.disconnect_client
+    
+  end
+
+  it "Tries to tell the client to connect" do
+    client = double('client')
+    allow(client).to receive(:disconnect)
+    expect(client).to receive(:connect).at_least(1).times
+
+    connection_diagnostic = ConnectionDiagnostic.new(client)
+    connection_diagnostic.connect_client
+    
+  end
+
+  it "Tries to tell the client to connect up to 3 times" do
+    client = double('client')
+    allow(client).to receive(:disconnect)
+    expect(client).to receive(:connect).at_most(3).times
+
+    connection_diagnostic = ConnectionDiagnostic.new(client)
+    connection_diagnostic.connect_client
+    
+  end
+
+  it "Tries to tell the client to connect up to 3 times unless it connects" do
+    client = double('client')
+    allow(client).to receive(:disconnect)
+    expect(client).to receive(:connect).at_most(3).times
+
+    connection_diagnostic = ConnectionDiagnostic.new(client)
+    connection_diagnostic.connect_client
+    
+  end
 
 end
+
+
