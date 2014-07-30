@@ -7,12 +7,13 @@ require 'sensor'
 
 class Alarm
   attr_accessor :sensor
+
   def initialize(sensor)
     @sensor = sensor
   end
 
   def trigger
-    if @sensor < 50
+    if @sensor.get_value < 50
       "beep beep"
     end
   end

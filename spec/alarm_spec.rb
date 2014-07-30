@@ -19,8 +19,17 @@ describe Alarm do
   it "receives a sensor value of 10 and alarm is triggered" do
     sensor = double('sensor')
     allow(sensor).to receive(:get_value).and_return(10)
-    alarm = Alarm.new(sensor.get_value)
+    alarm = Alarm.new(sensor)
 
     expect(alarm.trigger).to eq("beep beep")
   end
+
+  it "receives a sensor value of 60 and alarm is NOT triggered" do
+    sensor = double('sensor')
+    allow(sensor).to receive(:get_value).and_return(60)
+    alarm = Alarm.new(sensor)
+
+    expect(alarm.trigger).to eq(nil)
+  end
+
 end
