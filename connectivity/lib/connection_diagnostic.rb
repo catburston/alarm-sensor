@@ -1,5 +1,4 @@
 require 'client'
-
 class ConnectionDiagnostic
 
   attr_accessor :client
@@ -13,11 +12,18 @@ class ConnectionDiagnostic
   end
 
   def disconnect_client
-    @client.disconnect 
+    @client.disconnect
   end
 
   def connect_client
-    3.times { @client.connect } 
+    i = 0
+    num = 3
+
+    while i < num && !@client.online_status do
+       @client.connect
+       i +=1
+    end
+
   end
 
   def perform_diagnostic
